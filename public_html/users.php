@@ -1,5 +1,5 @@
 <?php 
-//TESTING GITHub
+//TESTING
 require_once("../application/models/applicationModel.php");
 require_once("../application/models/usersModel.php");
 
