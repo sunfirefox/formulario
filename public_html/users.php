@@ -1,5 +1,5 @@
 <?php 
-
+//TESTING GITHub
 require_once("../application/models/applicationModel.php");
 require_once("../application/models/usersModel.php");
 
@@ -36,7 +36,7 @@ switch($action)
 		}
 		else
 		{
-			definir arrayUser
+			//definir arrayUser
 			
 			include("../application/views/formulario.php");
 		}
