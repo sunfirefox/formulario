@@ -14,6 +14,9 @@ if(isset($_GET['action']))
 else
 	$action='select';
 
+//BUFFER START
+ob_start();
+
 switch($action)
 {
 	case 'update':
@@ -72,9 +75,11 @@ switch($action)
 	break; 
 }
 
-$content="";
+$content=ob_get_contents();
+ob_end_clean();
 
 include('../application/layouts/layout_admin.php');
+
 
 
 
