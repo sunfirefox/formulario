@@ -72,7 +72,7 @@ switch($action)
 	break; 
 }
 
-
+include('../application/layouts/layout_admin.php');
 
 
 
