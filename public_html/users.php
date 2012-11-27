@@ -72,6 +72,8 @@ switch($action)
 	break; 
 }
 
+$content="";
+
 include('../application/layouts/layout_admin.php');
 
 
