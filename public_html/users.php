@@ -1,4 +1,5 @@
 <?php 
+define ('DOCUMENT_ROOT', $_SERVER['DOCUMENT_ROOT']);
 
 require_once("../application/models/applicationModel.php");
 require_once("../application/models/usersModel.php");
@@ -14,8 +15,6 @@ if(isset($_GET['action']))
 else
 	$action='select';
 
-//BUFFER START
-ob_start();
 
 switch($action)
 {
@@ -23,19 +22,22 @@ switch($action)
 // 		die("esto es update");
 		if ($_POST)
 		{
-			$imageName=updateImage($_FILES, $_GET['id'], $config['filename']);
+ 			$imageName=updateImage($_FILES, $_GET['id'], $config['filename']);
 			updateToFile($imageName, $_GET['id'], $config['filename']);
 			header ("Location: users.php?action=select");
 			exit();
 		}
 		else
 		{
-			$arrayUser=readUser($_GET['id'], $config['filename']);			
+			//$arrayUser=readUser($_GET['id'], $config['filename']);	
+			//$params=array();
+			$params['arrayUser']=readUser($_GET['id'], $config['filename']);	
 		}
 
 	case 'insert':
 		if($_POST)
-		{			
+		{
+			//$imageName=uploadImage($_FILES, $config['uploadDirectory']);
 			$imageName=uploadImage($_FILES, $config['uploadDirectory']);
 			writeToFile($imageName, $config['filename']);
 			header ("Location: users.php?action=select");
@@ -43,7 +45,9 @@ switch($action)
 		}
 		else
 		{
-			include("../application/views/formulario.php");
+			$params['arrayUser']=
+			$content=renderView($config,"formulario",$params);
+			//(include("../application/views/formulario.php");
 		}
 			
 	break;
@@ -65,18 +69,23 @@ switch($action)
 		}
 		else
 		{
-			include("../application/views/delete.php");
+			//include("../application/views/delete.php");
+			//Buffer assigned and flushed
+			$content=renderView($config,"delete");
 		}
 	break;
 	case 'select':
 		$arrayUsers=readUsersFromFile($config['filename']);	
-		include("../application/views/select.php");
+		$params=array();
+		$params['arrayUsers']=readUsersFromFile($config['filename']);	
+		
+		$content=renderView($config,"select",$params);
+
 	default:
 	break; 
 }
 
-$content=ob_get_contents();
-ob_end_clean();
+
 
 include('../application/layouts/layout_admin.php');
 

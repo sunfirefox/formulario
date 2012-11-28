@@ -37,3 +37,23 @@ function readConfig($configFile, $context)
 	
 	return $arrayConfig;
 }
+
+/**
+ * Render View
+ * @param string $config Config
+ * @param string $view View File
+ * @param array $param Array
+ * @return string: $content string
+ */
+function renderView($config, $view, array $params=array())
+{
+	ob_start(); //BUFFER START
+	
+	include ($config['viewsDirectory']."/".$view.".php");
+	$content=ob_get_contents();
+	ob_end_clean();
+	
+	return $content;
+}
+
+

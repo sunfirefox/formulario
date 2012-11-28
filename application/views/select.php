@@ -6,7 +6,7 @@
 		<th>language</th><th>submit</th><th>photo</th>
 		<th>Action</th>
 	</tr>
-	<?php foreach($arrayUsers as $key => $users):?>
+	<?php foreach($params['arrayUsers'] as $key => $users):?>
 		<tr>
 		<?php 
 		$user=explode("|",$users);
