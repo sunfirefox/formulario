@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Uload image 
+ * Upload image 
  * @param array $_FILES Array FILES
  * @return string Image final name
  */
@@ -19,6 +19,9 @@ function uploadImage($_FILES, $uploadDirectory)
 	}	
 	$destination = $uploadDirectory."/".$name;
 	move_uploaded_file($filename, $destination);
+	
+	var_dump($destination);
+	
 	return $name;
 }
 
@@ -27,26 +30,25 @@ function uploadImage($_FILES, $uploadDirectory)
  * @param array $_FILES Files array
  * @param int $id User id
  */
-function updateImage($_FILES, $id, $filename)
+function updateImage($_FILES, $id, $filename, $uploadDirectory)
 {
 	$arrayUser=readUser($id, $filename);
 	$image=$arrayUser[10];	
 // 	Si FILES nueva 
 	if(isset($_FILES['photo']['name']))
 	{
-		$uploadDirectory=$_SERVER['DOCUMENT_ROOT']."/uploads";
-// 		borrar imagen		
+// 		borrar imagen	
 		$image=str_replace("\r", "", $image);
 		$image=str_replace("\n", "", $image);
 		unlink($uploadDirectory."/".$image);
 // 		subir imagen nueva
-		$image=uploadImage($_FILES);
-		
+		$image=uploadImage($_FILES, $uploadDirectory);
 	}
 // 	de lo contrario
 	else
 	{ 
 // 		no borrar nada
+		$image=$filename;
 	}
 // 	devolver imagen
 	return $image;

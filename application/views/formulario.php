@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<title>The New York Times - Breaking News, World News &amp; Multimedia</title>
-<meta name="robots" content="noarchive,noodp,noydir">
-<meta name="description" content="Formulario web">
-<meta name="keywords" content="Formulario,Web,PHP">
-<meta charset="UTF-8" />
-</head>
-<body>
+
 <form method="POST"
 	enctype="multipart/form-data">
 <ul>
@@ -51,7 +42,7 @@ Idiomas: Inglés <input type="checkbox" name="languages[]" value="en" <?=(strpos
 <li>
 Foto: <input type="file" name="photo"/>
 	  <?php if(isset($params['arrayUser'][10])):?>
-	  	<img src="uploads/<?=$params['arrayUser'][10];?>" style="width:150px;"/>
+	  	<img src="<?=$config['imagesDirectory']."/".$params['arrayUser'][10];?>" style="width:150px;"/>
 	  <?php endif;?>
 </li>
 <li>
@@ -64,5 +55,4 @@ Reset: <input type="reset" name="reset"/>
 
 </ul>
 </form>
-</body>
-</html>
+

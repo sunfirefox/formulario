@@ -4,7 +4,7 @@ define ('DOCUMENT_ROOT', $_SERVER['DOCUMENT_ROOT']);
 require_once("../application/models/applicationModel.php");
 require_once("../application/models/usersModel.php");
 
-$config=readConfig('../application/configs/config.ini', 'production');
+$config = readConfig('../application/configs/config.ini', 'production');
 
 // Inicializaciones
 $arrayUser=initArrayUser();
@@ -22,22 +22,19 @@ switch($action)
 // 		die("esto es update");
 		if ($_POST)
 		{
- 			$imageName=updateImage($_FILES, $_GET['id'], $config['filename']);
+ 			$imageName=updateImage($_FILES, $_GET['id'], $config['filename'], $config['uploadDirectory']);
 			updateToFile($imageName, $_GET['id'], $config['filename']);
 			header ("Location: users.php?action=select");
 			exit();
 		}
 		else
 		{
-			//$arrayUser=readUser($_GET['id'], $config['filename']);	
-			//$params=array();
-			$params['arrayUser']=readUser($_GET['id'], $config['filename']);	
+			$arrayUser=readUser($_GET['id'], $config['filename']);		
 		}
 
 	case 'insert':
 		if($_POST)
 		{
-			//$imageName=uploadImage($_FILES, $config['uploadDirectory']);
 			$imageName=uploadImage($_FILES, $config['uploadDirectory']);
 			writeToFile($imageName, $config['filename']);
 			header ("Location: users.php?action=select");
@@ -45,7 +42,7 @@ switch($action)
 		}
 		else
 		{
-			$params['arrayUser']=
+			$params['arrayUser']=$arrayUser;
 			$content=renderView($config,"formulario",$params);
 			//(include("../application/views/formulario.php");
 		}
