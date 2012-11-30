@@ -3,8 +3,14 @@ define ('DOCUMENT_ROOT', $_SERVER['DOCUMENT_ROOT']);
 
 require_once("../application/models/applicationModel.php");
 require_once("../application/models/usersModel.php");
+require_once("../application/models/mysqlModel.php");
+require_once("../application/models/debugModel.php");
+require_once("../application/models/usersdbModel.php");
 
 $config = readConfig('../application/configs/config.ini', 'production');
+
+//Database connection
+$cnx=connect($config);
 
 // Inicializaciones
 $arrayUser=initArrayUser();
@@ -72,9 +78,12 @@ switch($action)
 		}
 	break;
 	case 'select':
-		$arrayUsers=readUsersFromFile($config['filename']);	
-		$params=array();
-		$params['arrayUsers']=readUsersFromFile($config['filename']);	
+		//arrayUsers=readUsersFromFile($config['filename']);	
+		//$params=array();
+		
+		$arrayUsers=readUsers($cnx);
+		
+		$params=array('arrayUsers'=>$arrayUsers);	
 		
 		$content=renderView($config,"select",$params);
 
