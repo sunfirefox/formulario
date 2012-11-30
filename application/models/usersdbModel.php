@@ -50,6 +50,7 @@ function getPetsFromUser($iduser, $cnx)
 				WHERE users_has_pets.users_iduser=".$iduser.";";
 	$result=query($sql,$cnx);
 	//To array
+	$arrayPets=array();
 	foreach($result as $value) $arrayPets[]=$value['pet'];
 	//Format
 	$pets=implode(", ", $arrayPets);	
@@ -71,6 +72,7 @@ function getLanguagesFromUser($iduser, $cnx)
 				WHERE users_has_languages.users_iduser=".$iduser.";";
 	$result=query($sql,$cnx);
 	//To array
+	$arrayLanguages=array();
 	foreach($result as $value) $arrayLanguages[]=$value['language'];
 	//Format
 	$languages=implode(", ", $arrayLanguages);

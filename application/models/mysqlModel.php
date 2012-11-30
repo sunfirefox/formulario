@@ -59,6 +59,7 @@ function query($sql, $cnx)
 		}
 		else
 		{
+			$arrayData=array();
 			while ($row=mysql_fetch_array($result, MYSQL_ASSOC))
 			{
 				$arrayData[]=$row;
