@@ -25,7 +25,7 @@ else
 switch($action)
 {
 	case 'update':
-// 		die("esto es update");
+// 		die("esto es update") ;
 		if ($_POST)
 		{
  			$imageName=updateImage($_FILES, $_GET['id'], $config['filename'], $config['uploadDirectory']);
