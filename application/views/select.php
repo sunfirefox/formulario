@@ -2,14 +2,13 @@
 <table border=1>
 	<tr>
 		<th>id</th><th>name</th><th>email</th><th>password</th>
-		<th>description</th><th>pet</th><th>code</th>
-		<th>language</th><th>submit</th><th>photo</th>
+		<th>description</th><th>photo</th><th>code</th><th>City</th><th>pet</th>
+		<th>language</th>
 		<th>Action</th>
 	</tr>
-	<?php foreach($params['arrayUsers'] as $key => $users):?>
+	<?php foreach($params['arrayUsers'] as $key => $user):?>
 		<tr>
-		<?php 
-		$user=explode("|",$users);
+		<?php
 		foreach ($user as $value):		
 		?>
 			<td>

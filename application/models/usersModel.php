@@ -111,7 +111,7 @@ function readUsersFromFile($filename)
  * @param int $id User id: line number
  * @return array: User array
  */
-function readUser($id, $filename)
+function readUserFile($id, $filename)
 {
 	$arrayUsers=readUsersFromFile($filename);
 	$arrayUser=$arrayUsers[$_GET['id']];
@@ -135,7 +135,7 @@ function initArrayUser()
  * Delete user from file and image from directory
  * @param int $id User Id
  */
-function deleteUser($id, $filename)
+function deleteUserFile($id, $filename)
 {
 // 	Leer el usuario segun id
 	$arrayUser=readUser($id,$filename);
