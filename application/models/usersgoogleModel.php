@@ -3,14 +3,27 @@
 /**
  * 
  * @param unknown_type $cnx
- * @return unknown
+ * @return $listFeed
  */
-function readUsers($spreadsheetService, $config)
+function getUsersList($spreadsheetService, $config)
 {
 	$query = new Zend_Gdata_Spreadsheets_ListQuery();
     $query->setSpreadsheetKey($config['google.spreadsheetKey']);
     $query->setWorksheetId($config['google.worksheetID']);
     $listFeed = $spreadsheetService->getListFeed($query);
+	
+	return $listFeed;
+}
+
+
+/**
+ * 
+ * @param unknown_type $cnx
+ * @return unknown
+ */
+function readUsers($spreadsheetService, $config)
+{
+    $listFeed=getUsersList($spreadsheetService, $config);
 
 	$arrayUsers=$listFeed->entries;
 	
@@ -23,51 +36,19 @@ function readUsers($spreadsheetService, $config)
  * @param unknown_type $cnx
  * @return unknown
  */
-function readUser($id, $cnx)
+function readUser($id, $spreadsheetService, $config)
 {
+	$listFeed=getUsersList($spreadsheetService, $config);
+	$listEntry=$listFeed->entries[$id];
+	//$user=$listEntry->getCustom();
+	
+	$arrayUser=array();
+	
+	foreach ($listEntry->getCustom() as $key => $value){
+		$arrayUser[$key]=$value->getText();
+	}
+	
 	return $arrayUser;
-}
-
-/**
- * 
- * @param int $iduser
- * @param Conector $cnx
- * @return string $pets
- */
-function getPetsFromUser($iduser, $cnx)
-{
-	$sql="SELECT pet
-		  FROM pets
-		  INNER JOIN users_has_pets ON
-				users_has_pets.pets_idpet=pets.idpet
-				WHERE users_has_pets.users_iduser=".$iduser.";";
-	$result=query($sql,$cnx);
-	//To array
-	foreach($result as $value) $arrayPets[]=$value['pet'];
-	//Format
-	$pets=implode(", ", $arrayPets);	
-	return $pets;
-}
-
-/**
- *
- * @param int $iduser
- * @param Conector $cnx
- * @return string $languages
- */
-function getLanguagesFromUser($iduser, $cnx)
-{
-	$sql="SELECT language
-		  FROM languages
-		  INNER JOIN users_has_languages ON
-				users_has_languages.languages_idlanguage=languages.idlanguage
-				WHERE users_has_languages.users_iduser=".$iduser.";";
-	$result=query($sql,$cnx);
-	//To array
-	foreach($result as $value) $arrayLanguages[]=$value['language'];
-	//Format
-	$languages=implode(", ", $arrayLanguages);
-	return $languages;
 }
 
 /**
@@ -99,8 +80,26 @@ function insertUser($_POST, $imageName, $spreadsheetService, $config)
  * @param unknown_type $cnx
  * @return unknown
  */
-function updateUser($arrayData, $id, $cnx)
+function updateUser($id, $_POST, $imageName, $spreadsheetService, $config)
 {
+	//Data...
+	foreach($_POST as $key => $value)
+	{
+		if(is_array($value))
+			$value=implode(',',$value);	
+		$arrayUser[$key]=$value;	
+	}
+	unset($arrayUser["submit"]);
+	$arrayUser['photo']=$imageName;
+
+	//Entry
+	$listFeed=getUsersList($spreadsheetService, $config);
+	$listEntry=$listFeed->entries[$id];
+	//$user=$listEntry->getCustom();
+	
+	$updatedListEntry = $spreadsheetService->updateRow($listEntry,
+                                                       $arrayUser);
+
 	return $numRows;
 }
 
@@ -110,7 +109,15 @@ function updateUser($arrayData, $id, $cnx)
  * @param unknown_type $cnx
  * @return unknown
  */
-function deleteUser($id, $cnx)
+function deleteUser($id, $spreadsheetService, $config)
 {
-	return $numrows;
+	$listFeed=getUsersList($spreadsheetService, $config);
+	$listEntry=$listFeed->entries[$id];
+
+	//delete image
+	//$user=$listEntry->getCustom();
+    $image = $listEntry->getCustomByName('photo')->getText();
+	deleteImage($image);
+	
+	$listEntry->delete();
 }

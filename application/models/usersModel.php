@@ -20,6 +20,8 @@ function uploadImage($_FILES, $uploadDirectory)
 	$destination = $uploadDirectory."/".$name;
 	move_uploaded_file($filename, $destination);
 	
+	
+	
 	return $name;
 }
 
@@ -159,6 +161,20 @@ function deleteUserFile($id, $filename)
 	
 // 	Reescribir fichero txt
 	file_put_contents("users.txt", $textUsers);
+}
+
+/**
+ * Delete  image from directory
+ * @param int $id User Id
+ */
+function deleteImage($imagename)
+{
+		$uploadDirectory=$_SERVER['DOCUMENT_ROOT']."/uploads";	
+// 		Limpiar el nombre de la foto
+		$image=str_replace("\r", "", $imagename);
+		$image=str_replace("\n", "", $imagename);
+// 		Borrar la foto
+		unlink($uploadDirectory."/".$imagename);
 }
 
 

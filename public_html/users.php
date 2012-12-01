@@ -39,21 +39,22 @@ switch($action)
 // 		die("esto es update") ;
 		if ($_POST)
 		{
- 			$imageName=updateImage($_FILES, $_GET['id'], $config['filename'], $config['uploadDirectory']);
-			updateToFile($imageName, $_GET['id'], $config['filename']);
+ 			//$imageName=updateImage($_FILES, $_GET['id'], $config['filename'], $config['uploadDirectory']);
+			//updateToFile($imageName, $_GET['id'], $config['filename']);
+			updateUser($_GET['id'], $_POST, $imageName, $spreadsheetService, $config);
 			header ("Location: users.php?action=select");
 			exit();
 		}
 		else
 		{
-			$arrayUser=readUser($_GET['id'], $config['filename']);		
+			$arrayUser=readUser($_GET['id'], $spreadsheetService, $config);		
 		}
 
 	case 'insert':
 		if($_POST)
 		{
 			$imageName=uploadImage($_FILES, $config['uploadDirectory']);
-			$intertion= insertUser($_POST, $imageName, $spreadsheetService, $config);
+			$insertion= insertUser($_POST, $imageName, $spreadsheetService, $config);
 			
 			header ("Location: users.php?action=select");
 			exit();
@@ -70,7 +71,7 @@ switch($action)
 		{
 			if($_POST['submit']=='si')
 			{
-				deleteUser($_GET['id'], $config['filename']);
+				deleteUser($_GET['id'], $spreadsheetService, $config);
 				header ("Location: users.php?action=select");
 				exit();
 			}
@@ -83,8 +84,6 @@ switch($action)
 		}
 		else
 		{
-			//include("../application/views/delete.php");
-			//Buffer assigned and flushed
 			$content=renderView($config,"delete");
 		}
 	break;
@@ -102,20 +101,5 @@ switch($action)
 
 
 include('../application/layouts/layout_admin.php');
-
-
-
-
-
-
-
-
-
-//_debug($spreadsheetService);
-
-
-
-
-
 
 
