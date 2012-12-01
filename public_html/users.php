@@ -1,16 +1,27 @@
 <?php 
 define ('DOCUMENT_ROOT', $_SERVER['DOCUMENT_ROOT']);
 
+set_include_path(get_include_path().PATH_SEPARATOR."../libs/ZendGdata-1.12.0/library");
+
 require_once("../application/models/applicationModel.php");
-require_once("../application/models/usersModel.php");
-require_once("../application/models/mysqlModel.php");
 require_once("../application/models/debugModel.php");
-require_once("../application/models/usersdbModel.php");
+require_once("../application/models/usersModel.php");
+//require_once("../application/models/mysqlModel.php");
+//require_once("../application/models/usersdbModel.php");
+require_once("../application/models/googleModel.php");
+require_once("../application/models/usersgoogleModel.php");
+
+
+require_once 'Zend/Loader.php';
+Zend_Loader::loadClass('Zend_Gdata_AuthSub');
+Zend_Loader::loadClass('Zend_Gdata_ClientLogin');
+Zend_Loader::loadClass('Zend_Gdata_Spreadsheets');
+Zend_Loader::loadClass('Zend_Gdata_Docs');
 
 $config = readConfig('../application/configs/config.ini', 'production');
 
-//Database connection
-$cnx=connect($config);
+//Google connection
+$spreadsheetService=connect($config);
 
 // Inicializaciones
 $arrayUser=initArrayUser();
@@ -42,7 +53,8 @@ switch($action)
 		if($_POST)
 		{
 			$imageName=uploadImage($_FILES, $config['uploadDirectory']);
-			writeToFile($imageName, $config['filename']);
+			$intertion= insertUser($_POST, $imageName, $spreadsheetService, $config);
+			
 			header ("Location: users.php?action=select");
 			exit();
 		}
@@ -50,7 +62,6 @@ switch($action)
 		{
 			$params['arrayUser']=$arrayUser;
 			$content=renderView($config,"formulario",$params);
-			//(include("../application/views/formulario.php");
 		}
 			
 	break;
@@ -79,12 +90,10 @@ switch($action)
 	break;
 	case 'select':
 		//arrayUsers=readUsersFromFile($config['filename']);	
-		//$params=array();
-		
-		$arrayUsers=readUsers($cnx);
-		
-		$params=array('arrayUsers'=>$arrayUsers);	
-		
+		$params=array();
+		$arrayUsers=readUsers($spreadsheetService,$config);
+		$params["arrayUsers"]=$arrayUsers;
+				
 		$content=renderView($config,"select",$params);
 
 	default:
@@ -92,8 +101,19 @@ switch($action)
 }
 
 
-
 include('../application/layouts/layout_admin.php');
+
+
+
+
+
+
+
+
+
+//_debug($spreadsheetService);
+
+
 
 
 

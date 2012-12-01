@@ -20,8 +20,6 @@ function uploadImage($_FILES, $uploadDirectory)
 	$destination = $uploadDirectory."/".$name;
 	move_uploaded_file($filename, $destination);
 	
-	var_dump($destination);
-	
 	return $name;
 }
 

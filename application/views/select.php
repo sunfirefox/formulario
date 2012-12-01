@@ -6,13 +6,14 @@
 		<th>language</th>
 		<th>Action</th>
 	</tr>
-	<?php foreach($params['arrayUsers'] as $key => $user):?>
+	<?php
+	 foreach($params['arrayUsers'] as $key => $user):?>
 		<tr>
 		<?php
-		foreach ($user as $value):		
+		foreach ($user->getCustom() as $value):		
 		?>
 			<td>
-			<?=$value; ?>
+			<?=$value->getText(); ?>
 			</td>
 		<?php endforeach;?>
 		<td>
