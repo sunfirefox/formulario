@@ -1,0 +1,4 @@
+X,&nbsp;,&nbsp;,&nbsp;
+X,&nbsp;,&nbsp;,&nbsp;
+X,&nbsp;,0,&nbsp;
+X,0,0,0
